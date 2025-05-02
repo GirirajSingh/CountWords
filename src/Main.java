@@ -12,17 +12,62 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter a input file path name. Use \"src/resources/input.txt\" for already curated input file : ");
-        String filePath = scanner.nextLine();
+        String filePath = getFilePath(scanner);
+        String[] startingWordsStrArr = getStartingWords(scanner);
+        int lengthOfWord = getLengthOfWord(scanner);
+        closeScanner(scanner);
 
+        printResult(filePath, startingWordsStrArr, lengthOfWord);
+
+    }
+
+    /**
+     * Closes scanner
+     * @param scanner
+     */
+    private static void closeScanner(Scanner scanner) {
+        scanner.close();
+    }
+
+    /**
+     * @param scanner
+     * @return input word length
+     */
+    private static int getLengthOfWord(Scanner scanner) {
+        System.out.println("Enter the length of Word String to be returned eg 5: ");
+        return scanner.nextInt();
+    }
+
+    /**
+     * @param scanner
+     * @return string array containing starting letters which are to be searched from the given spring pool
+     */
+    private static String[] getStartingWords(Scanner scanner) {
         System.out.println("Enter the comma separated starting letter for string search eg M,m: ");
         String startingWordsStr = scanner.nextLine();
         String[] startingWordsStrArr = startingWordsStr.split(",");
+        for(int i = 0; i< startingWordsStrArr.length; i++){
+            startingWordsStrArr[i] = startingWordsStrArr[i].trim();
+        }
+        return startingWordsStrArr;
+    }
 
-        System.out.println("Enter the length of Word String to be returned eg 5: ");
-        int lengthOfWord = scanner.nextInt();
-        scanner.close();
+    /**
+     * @param scanner
+     * @return file path of spring pool to analyse
+     */
+    private static String getFilePath(Scanner scanner){
+        System.out.println("Enter a input file path name. Use \"src/resources/input.txt\" for already curated input file : ");
+        return scanner.nextLine();
+    }
 
+    /**
+     * Fetch and prints the result which is taken from @getWordCount
+     * @param filePath: file path of spring pool to analyse
+     * @param startingWordsStrArr: string array containing starting letters which are to be searched from the given spring pool
+     * @param lengthOfWord: input word length
+     */
+    private static void printResult(String filePath, String[] startingWordsStrArr, int lengthOfWord){
         System.out.println("---------------------------------------------------------------------");
         System.out.println("Results are follows:");
         System.out.println("---------------------------------------------------------------------");
@@ -35,15 +80,25 @@ public class Main {
         System.out.println("---------------------------------------------------------------------");
     }
 
-    public static long getWordCount(String filePath, String[] startingWordsStrArr){
+    /**
+     * @param filePath
+     * @param startingWordsStrArr
+     * @return count of words in filePath which are starting with letters mentioned in startingWordsStrArr
+     */
+    private static long getWordCount(String filePath, String[] startingWordsStrArr){
         List<String> inputStringList = InputReader.readFromFile(filePath);
         WordCounter wordCounter = new WordCounterImpl();
         return wordCounter.wordCount(inputStringList, startingWordsStrArr);
     }
 
-    public static List<String> getWordsWithLengthMoreThan(String filePath, int length){
+    /**
+     * @param filePath
+     * @param lengthWord
+     * @return words from filePath whose length is more then given lengthWord
+     */
+    private static List<String> getWordsWithLengthMoreThan(String filePath, int lengthWord){
         List<String> inputStringList = InputReader.readFromFile(filePath);
         WordListGetter wlg = new WordListGetterImpl();
-        return wlg.getWordsWithLengthMoreThan(inputStringList, length);
+        return wlg.getWordsWithLengthMoreThan(inputStringList, lengthWord);
     }
 }
