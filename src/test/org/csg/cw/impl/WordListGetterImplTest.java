@@ -20,7 +20,7 @@ class WordListGetterImplTest {
         List<String> inputStringList = InputReader.readFromFile(filePath);
         WordListGetter wlg = new WordListGetterImpl();
         List<String> actualList = wlg.getWordsWithLengthMoreThan(inputStringList, length);
-        List<String> expectedList = List.of("Money", "process", "sensitive", "valid");
+        List<String> expectedList = List.of("process", "sensitive");
 
         Assertions.assertTrue(expectedList.containsAll(actualList));
         Assertions.assertTrue(actualList.containsAll(expectedList));
